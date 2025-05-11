@@ -5,6 +5,7 @@
 
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from darb import Darb
 import numpy as np
 import pandas as pd
@@ -15,6 +16,15 @@ app = FastAPI()
 
 # Load Model
 model = joblib.load("rfcModel.pkl")
+
+# Allow CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or ["*"] for all
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post('/predict')
 def predict_diabetes(data:Darb):
